@@ -2,10 +2,6 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-image = cv2.imread('./images/noisy_kojima.png') 
-if image is None:
-    raise FileNotFoundError("Image not found. Check the file path.")
-
 def denoise(image):
     return cv2.bilateralFilter(image, d=9, sigmaColor=75, sigmaSpace=75)
 
@@ -49,19 +45,4 @@ def sharpen(image):
 def gaussian_blur(image, kernel_size=(3, 3)):
     return cv2.GaussianBlur(image, kernel_size, 0)
 
-denoised = denoise(image)
-contrast_adjusted, alpha, beta = automatic_brightness_and_contrast(denoised)
-blurred = gaussian_blur(contrast_adjusted)  
-sharpened = sharpen(blurred)
 
-fig = plt.figure(figsize=(12, 8))
-ax1 = fig.add_subplot(1, 2, 1)
-ax1.set_title("Original Image")
-ax1.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-
-ax2 = fig.add_subplot(1, 2, 2)
-ax2.set_title("Processed Image")
-ax2.imshow(cv2.cvtColor(sharpened, cv2.COLOR_BGR2RGB))
-
-plt.tight_layout()
-plt.show()
